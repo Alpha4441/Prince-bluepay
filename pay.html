@@ -3,55 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Page</title>
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/3ee0f23889.js" crossorigin="anonymous"></script>
+    <script src="js.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;1,900&display=swap');
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .top {
+            width: 100%;
+            height: 39px; 
+            margin-top: 30px;
+            background: rgb(208, 206, 206);
+        }
+        .top p {
+            padding-top: 6px;
+            padding-left: 20px;
+        }
+
+        .amount {
+            width: 100%;
+            height: 120px;
+            background: #ffffff;
+        }
+        .amount h3  {
+            float: right;
+            position: relative;
+            bottom: -20px;
+            padding-right: 12px;
+        }
+        .amount img {
+            width: 100px;
+            position: relative;
+            top: -36px;
+        }
+        .tp p {
+            text-align: center;
+        }
+        .box {
+            width: 95%;
+            height: fit-content;
+            margin: 0 auto;
+            border: 1px solid grey;
+            background: #f5f2f2;
+        }
+        .box h3, p {
+            padding-left: 15px;
+        }
+        .copy-button {
+            float: right;
+            margin-right: 15px;
+            background-color: orange;
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            top: -20px;
+            width: 50px;
+        }
+        .btn button {
+            width: 89%;
+            height: 39px;
+            margin:  0 auto;
+            display: block;
+            border: none;
+            background: orange;
+        }
+
+        /* Modal Styles */
+        #paymentModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-content h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 10px 0;
+        }
+
+        .modal-content button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .modal-content button:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
-    <!-- Payment Form -->
-    <form id="paymentForm">
-        <label for="fullName">Full Name:</label>
-        <input type="text" id="fullName" name="fullName" placeholder="Full Name" required><br><br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Email" required><br><br>
-
-        <button type="submit" id="payButton">Pay</button>
-    </form>
-
-    <!-- Loader -->
-    <div id="loaderContainer" style="display: none;">
-        <p>Loading... Please wait.</p>
+    <div class="top">
+        <p>Bank Transfer <span style="float: right; padding-right: 10px; color: red;">Cancel</span></p>
+    </div>
+    <div class="amount">
+        <h3>NGN <span>6,500</span></h3>
+        <img src="f207.png" alt="">  
+    </div>
+    <div class="tp">
+        <p>Proceed to your bank app to complete this Transfer</p>
+    </div>
+    <div class="box">
+        <p>Amount</p>
+        <h3>NGN 6500</h3>
+        <button class="copy-button" onclick="copyText('amountToCopy')">Copy</button>
+        <br>
+        <p>Account Number</p>
+        <h3>8125639613</h3>
+        <button class="copy-button" onclick="copyText('accountNumberToCopy')">Copy</button>
+        <br>
+        <p>Bank Name</p>
+        <h3>OPAY</h3>
+        <div class="btn">
+            <button onclick="showPaymentModal()">Pay Now</button>
+        </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- Payment Modal -->
+    <div id="paymentModal">
+        <div class="modal-content">
+            <h2>Payment</h2>
+            <p>An email will be generated for you to keep your identity safe. Your code will be displayed on the next page once your payment is successful. It is advisable to stay on the page after completing your payment, as you will be redirected to view your BPC code. Its cost is ₦5,500.</p>
+            <button onclick="redirectToPayment()">PAY NOW</button>
+        </div>
+    </div>
+
     <script>
-        // Get references to elements
-        const paymentForm = document.getElementById('paymentForm');
-        const payButton = document.getElementById('payButton');
-        const loaderContainer = document.getElementById('loaderContainer');
+        // Show the payment modal
+        function showPaymentModal() {
+            const modal = document.getElementById('paymentModal');
+            modal.style.display = 'flex';
+        }
 
-        // Event listener for the "Pay" button
-        payButton.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent form submission
-            if (paymentForm.checkValidity()) {
-                // Show loader
-                loaderContainer.style.display = 'flex';
+        // Redirect to banktf.html
+        function redirectToPayment() {
+            window.location.href = 'banktf.html';
+        }
 
-                // Simulate a 3-second loading process
-                setTimeout(function () {
-                    loaderContainer.style.display = 'none'; // Hide loader
-
-                    // Show confirmation dialog
-                    const isConfirmed = confirm("Payment successful! Click OK to proceed.");
-                    if (isConfirmed) {
-                        // Redirect to the second page (banktf.html) with form data
-                        const fullName = document.getElementById('fullName').value;
-                        const email = document.getElementById('email').value;
-                        const queryParams = `?fullName=${encodeURIComponent(fullName)}&email=${encodeURIComponent(email)}`;
-                        window.location.href = 'banktf.html' + queryParams;
-                    }
-                }, 3000);
-            }
-        });
+        // Copy text function
+        function copyText(elementId) {
+            const textToCopy = document.getElementById(elementId).textContent;
+            const dummyElement = document.createElement('textarea');
+            document.body.appendChild(dummyElement);
+            dummyElement.value = textToCopy;
+            dummyElement.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummyElement);
+            alert('Copied: ' + textToCopy);
+        }
     </script>
 </body>
 </html>
